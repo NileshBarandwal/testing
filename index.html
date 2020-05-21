@@ -23,7 +23,8 @@
         top: 30px;
         left: 25%;
         z-index: 5;
-        background-color: #fff;
+		background-color: #f9f9f9;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 5px;
         border: 1px solid #999;
         text-align: center;
@@ -36,7 +37,8 @@
         top: 90%;
         left: 2%;
         z-index: 5;
-        background-color: #fff;
+        background-color: #f9f9f9;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 5px;
         border: 1px solid #999;
         text-align: center;
@@ -49,9 +51,10 @@
         top: 90%;
         right: 2%;
         z-index: 5;
-        background-color: #fff;
+        background-color: #f9f9f9;
         padding: 5px;
         border: 1px solid #999;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         text-align: center;
         font-family: 'Roboto','sans-serif';
         line-height: 30px;
@@ -63,9 +66,11 @@
         top: 5%;
         right: 25%;
         z-index: 5;
-        background-color: #fff;
+		background-color: #f9f9f9;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 7px 70px 7px;
         border: 1px solid #999;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         text-align: center;
         font-family: 'Roboto','sans-serif';
         line-height: 30px;
@@ -75,15 +80,18 @@
 	  @media screen and (max-width:800px) {
 		#floating-panel {
         position: absolute;
-        top: 90px;
-        left: 19%;
+        top: 87px;
+        left: 22%;
+		background-color: #f9f9f9;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   }
   #selectcity {
         position: absolute;
-        top: 8%;
-        right: 15%;
+        top: 7%;
+        right: 19%;
+		background-color: #f9f9f9;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   }
-
 	  }
 
       /**/
@@ -156,7 +164,7 @@
   //String s = "{% static 'assets/states/" + "Bihar" + ".geojson' %}";
   //var stat = "ds";
 
-   map.data.loadGeoJson("assets/india-states.geojson");
+   map.data.loadGeoJson("./static/assets/india-states.geojson");
 
 //    map.data.setStyle(function(feature) {
 //   var color = 'red';
@@ -208,7 +216,7 @@ for (;i < v.zones.length - 1; i++) {
 
 console.log(dd);
 
-         map.data.loadGeoJson("assets/json/states/"+ document.getElementById('selectcity').value +".geojson");
+         map.data.loadGeoJson("./static/assets/states/"+ document.getElementById('selectcity').value +".geojson");
          map.data.addListener('mouseover', function(event) {
         document.getElementById('info-box').textContent =
         event.feature.getProperty('NAME_1')+' , '+ event.feature.getProperty('NAME_2') ;
