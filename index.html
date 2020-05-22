@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Google Map</title>
     <style>
+
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
@@ -34,7 +35,7 @@
       }
       #floating-info {
         position: absolute;
-        top: 90%;
+        bottom: 2%;
         left: 2%;
         z-index: 5;
         background-color: #f9f9f9;
@@ -77,6 +78,10 @@
         padding-left: 10px;
       }
 
+	  #search{
+			display: none;
+	  }
+
 	  @media screen and (max-width:800px) {
 		#floating-panel {
         position: absolute;
@@ -85,15 +90,15 @@
 		background-color: #f9f9f9;
 		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   }
-  #floating-dropdown {
+  #selectcity {
         position: absolute;
         top: 7%;
         right: 19%;
 		background-color: #f9f9f9;
 		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   }
-
   #search{
+	  display: block;
 	position: absolute;
         top: 7%;
         right: 3%;
@@ -105,10 +110,13 @@
 	  }
 
       /**/
-    </style>
+	</style>
+	
+	  <!-- Bootstrap CSS -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
   </head>
   <body>
-	<div id="floating-dropdown">
         <select id="selectcity">
                 <option value="" selected disabled>---- Select States ----</option>
                 <option value="Andaman and Nicobar">Andaman and Nicobar</option>
@@ -146,15 +154,13 @@
                 <option value="Uttar Pradesh">Uttar Pradesh</option>
                 <option value="West Bengal">West Bengal</option>
 			</select>
-	  </div>
 	  <input type="button" id="search" value="search">
-
             <div id="floating-info">
                 <label for="" id="info-box" placeholder="Select State and Scroll over to see name ">Select State and Scroll over to see name</label>
                 </div>
-                <div id="floating-patient">
+                <!-- <div id="floating-patient">
                          <label for="" id="info">Patient</label>
-                        </div>
+                        </div> -->
           <!-- ----- -->
         <div id="floating-panel">
                 <input id="address" type="textbox" placeholder="Type Name of Location">
@@ -172,26 +178,7 @@
           center: {lat:  19.7515, lng: 75.7139},
         });
 
-        //map.data.loadGeoJson('https://github.com/NileshBarandwal/geojson/blob/master/gadm36_ind_2.geojson');
-
-  //String s = "{% static 'assets/states/" + "Bihar" + ".geojson' %}";
-  //var stat = "ds";
-
    map.data.loadGeoJson("./static/assets/india-states.geojson");
-
-//    map.data.setStyle(function(feature) {
-//   var color = 'red';
-//   if (feature.getProperty('Name')=='Maharashtra') {
-//     color = 'green';
-//   }
-//   return /** @type {!google.maps.Data.StyleOptions} */({
-//     fillColor: color,
-//     strokeColor: color,
-//     strokeWeight: 2
-//   });
-// });
-
-
 
         map.data.setStyle({
               //  icon:  "icon": "http://maps.google.com/mapfiles/kml/pal3/icon1.png",
@@ -199,6 +186,7 @@
   //icon: '//example.com/path/to/image.png',
   strokeWeight: 1
 });
+
 
 //mobile
 
@@ -235,7 +223,7 @@ console.log(dd);
          map.data.addListener('mouseover', function(event) {
         document.getElementById('info-box').textContent =
         event.feature.getProperty('NAME_1')+' , '+ event.feature.getProperty('NAME_2') ;
-        var na = dd[event.feature.getProperty('NAME_1')][event.feature.getProperty('NAME_2')];
+        var na = "Zone : "+dd[event.feature.getProperty('NAME_1')][event.feature.getProperty('NAME_2')];
 
         document.getElementById('info').textContent = na;
 });
@@ -278,6 +266,7 @@ document.getElementById('selectcity').addEventListener('click', function() {
 // var i =0;
 
 var dd = {};
+var dc ={};
 var i=0;
 
 for (;i < v.zones.length - 1; i++) {
@@ -297,17 +286,25 @@ for (;i < v.zones.length - 1; i++) {
 		dd[v.zones[i].state] = {};
 
 	dd[v.zones[i].state][v.zones[i].district] = v.zones[i].districtcode;
+
+	if(!dc[v.zones[i].state])
+		dc[v.zones[i].state] = {};
+
+	dc[v.zones[i].state][v.zones[i].district] = v.zones[i].zone;
 }
 
 console.log(dd);
 
          map.data.loadGeoJson("./static/assets/states/"+ document.getElementById('selectcity').value +".geojson");
          map.data.addListener('mouseover', function(event) {
-        document.getElementById('info-box').textContent =
-        event.feature.getProperty('NAME_1')+' , '+ event.feature.getProperty('NAME_2') ;
-        var na = dd[event.feature.getProperty('NAME_1')][event.feature.getProperty('NAME_2')];
+			var html =  event.feature.getProperty('NAME_1')+' , '+ event.feature.getProperty('NAME_2') ;
+			html+="<br>"+"Patient : "+' 10 ';
+			html+="<br>"+"Zone : "+ dc[event.feature.getProperty('NAME_1')][event.feature.getProperty('NAME_2')];
 
-        document.getElementById('info').textContent = na;
+        document.getElementById('info-box').innerHTML = html;
+		infowindow.setContent(html);
+     infowindow.setPosition(event.latLng);
+     infowindow.open(map);
 });
 
 map.data.addListener('mouseout', function(event) {
@@ -334,37 +331,6 @@ console.log(DistrictColorCode);
 
          map.data.setStyle(function(feature) {
   var color = 'gray';
-//   if (feature.getProperty('VARNAME_2')=='Thana') {
-//   var  colors = 'red';
-//   }
-//   else if(feature.getProperty('ID_2') == '308'){
-//           colors = 'blue';
-//   }
-//   else if (feature.getProperty('ID_2')=='323') {
-//   var  colors = 'red';
-//   }
-//   else if (feature.getProperty('NAME_2')=='Pune') {
-//   var  colors = 'red';
-//   }
-//   else if (feature.getProperty('NAME_2')=='Aurangabad') {
-//   var  colors = 'orange';
-//   }
-//   else if (feature.getProperty('NAME_2')=='Jalna') {
-//   var  colors = 'green';
-//   }
-//   else if (feature.getProperty('ID_2')=='326') {
-//   var  colors = 'red';
-//   }
-//   else if (feature.getProperty('ID_2')=='332') {
-//   var  colors = 'orange';
-//   }
-//   else if (feature.getProperty('NAME_2')=='Ahmednagar') {
-//   var  colors = 'pink';
-//   }
-//   else if (feature.getProperty('NAME_2')=='Bid') {
-//   var  colors = 'blue';
-//   }
-
 var colors = DistrictColorCode[feature.getProperty('NAME_1')][feature.getProperty('NAME_2')];
 //var colors = DistrictColorCode[feature.getProperty('Name')];
   return /** @type {!google.maps.Data.StyleOptions} */({
@@ -377,63 +343,10 @@ var colors = DistrictColorCode[feature.getProperty('NAME_1')][feature.getPropert
       
 });
 
-
-// Color each letter gray. Change the color when the isColorful property
-// is set to true.
-
-//map.data.loadJson('https://api.covid19india.org/zones.json');
-
-// Replace ./data.json with your JSON feed
-// fetch('https://api.covid19india.org/zones.json')
-//   .then(response => {
-//     return response.json()
-//   })
-//   .then(data => {
-//     // Work with JSON data here
-// //     var a = data[0].zones;
-// // for(i=0;i<data.zones.length;i++){
-// //     console.log(data.zones[i].zone);
-
-// // console.log(data.zones[6].state);
-// //     console.log(data.zones[7].district);
-// //     console.log(data.zones[7].zone);
-
-// // console.log(data.zones[i]);
-
-// //     map.data.setStyle(function(feature) {
-// //   var color = 'gray';
-// //   if (data.zones==true) {
-// //   var  colors = data.zones[i].zone;
-// //   }
-// //   return /** @type {!google.maps.Data.StyleOptions} */({
-// //     fillColor: colors,
-// //     strokeColor: color,
-// //     strokeWeight: 2
-// //   });
-// // });
-// // }
-
-//   })
-//   .catch(err => {
-//     // Do something for an error here
-//   })
-
-// var StatColorCode = {
-// 	"Uttar Pradesh":"orange",
-// 	"Maharashtra":"red",
-// 	"Bihar":"green",
-// };
-
 var StatColorCode = {};
 var i=0;
 
 for (;i < v.zones.length - 1; i++) {
-
-//	var temp = {};
-//	temp[v.zones[i].district] = v.zones[i].zone;
-
-	//if(!DistrictColorCode[v.zones[i].state])
-		// DistrictColorCode[v.zones[i].state] = {};
 
                 StatColorCode[v.zones[i].state] = v.zones[i].zone;
 }
@@ -442,34 +355,6 @@ console.log(StatColorCode);
 
 map.data.setStyle(function(feature) {
   var color = 'gray';
-//   if (feature.getProperty('Name')=='Maharashtra') {
-//   var  colors = 'red';
-//   }
-//   else if (feature.getProperty('Name')=='Madhya Pradesh') {
-//   var  colors = 'orange';
-//   }
-//   else if (feature.getProperty('Name')=='Kerala') {
-//   var  colors = 'green';
-//   }
-//   else if (feature.getProperty('Name')=='Gujarat') {
-//   var  colors = 'pink';
-//   }
-//   else if (feature.getProperty('Name')=='Manipur') {
-//   var  colors = 'yellow';
-//   }
-//  if (feature.getProperty('Name')=='Rajastan') {
-//   var  colors = 'voilet';
-//   }
-//   else if (feature.getProperty('Name')=='Orissa') {
-//   var  colors = 'orange';
-//   }
-//   else if (feature.getProperty('Name')=='Andhra Pradesh') {
-//   var  colors = 'green';
-//   }
-//   else if (feature.getProperty('Name')=='Tamil Nadu') {
-//   var  colors = 'blue';
-//   }
-
 var colors = StatColorCode[feature.getProperty('Name')];
 
   return /** @type {!google.maps.Data.StyleOptions} */({
@@ -480,10 +365,10 @@ var colors = StatColorCode[feature.getProperty('Name')];
 });
 
 // When the user clicks, set 'isColorful', changing the color of the letters.
-map.data.addListener('click', function(event) {
+map.data.addListener('mouseover', function(event) {
   event.feature.setProperty('isColorful', true);
    map.data.revertStyle();
-  map.data.overrideStyle(event.feature, {strokeWeight: 4,fillColor:'red'});
+  map.data.overrideStyle(event.feature, {strokeWeight: 3,strokeColor:'white'});
 });
 
 
@@ -506,8 +391,18 @@ map.data.addListener('click', function(event) {
 
 map.data.addListener('mouseover', function(event) {
     
-        document.getElementById('info-box').textContent =
-             event.feature.getProperty('Name');
+       
+
+			 	var html =  event.feature.getProperty('Name') ;
+			html+="<br>"+"Patient : "+' 10000';
+			html+="<br>"+"Zone : "+StatColorCode[event.feature.getProperty('Name')];
+
+        document.getElementById('info-box').innerHTML = html;
+		infowindow.setContent(html);
+     infowindow.setPosition(event.latLng);
+    // infowindow.setOptions({pixelOffset: new google.maps.Size(0,-34)});
+     infowindow.open(map);
+
 });
 
 map.data.addListener('mouseout', function(event) {
@@ -716,19 +611,6 @@ geocoder.geocode({'address': address}, function(results, status) {
 
 });
 
-// });
-// (function (marker, geocode) {
-//             google.maps.event.addListener(marker, "mouseout", function (e) {
-//                    infoWindow.close();
-//                 });
-
-//                 google.maps.event.addListener(marker, "mouseover", function (e) {
-//                     infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + "Name : " +"<br>"+ "Patient : " + "</div>");
-//                     infoWindow.open(map, marker);
-//                 });
-//             })(marker, geocode);
-
-// });
 // ______________
 
       }
@@ -7535,6 +7417,12 @@ var nam = [
       async defer></script>
       <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
       <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> -->
-     
+	 
+	   <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		
   </body>
 </html>
