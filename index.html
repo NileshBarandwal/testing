@@ -90,9 +90,9 @@
 		background-color: #f9f9f9;
 		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   }
-  #selectcity {
+ #selectcity {
         position: absolute;
-        top: 7%;
+        top: 3%;
         right: 19%;
 		background-color: #f9f9f9;
 		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -100,13 +100,12 @@
   #search{
 	  display: block;
 	position: absolute;
-        top: 7%;
-        right: 3%;
-		padding: 7px 7px;
+        top: 3%;
+        right: 1%;
+		padding: 5px 5px 5px 5px;
         z-index: 5;
 		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   }
-
 	  }
 
       /**/
@@ -176,6 +175,8 @@
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 3,
           center: {lat:  19.7515, lng: 75.7139},
+		streetViewControl: false,
+             mapTypeControl: false
         });
 
    map.data.loadGeoJson("./static/assets/india-states.geojson");
