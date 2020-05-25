@@ -202,73 +202,73 @@
 
 //mobile
 
-document.getElementById('search').addEventListener('change', function() {
-        // if(g.length) map.data.remove(g[0]);
-        // map.data.revertStyle();
-// var i =0;
+// document.getElementById('search').addEventListener('change', function() {
+//         // if(g.length) map.data.remove(g[0]);
+//         // map.data.revertStyle();
+// // var i =0;
 
-var dd = {};
-var i=0;
+// var dd = {};
+// var i=0;
 
-for (;i < v.zones.length - 1; i++) {
+// for (;i < v.zones.length - 1; i++) {
 
-//	var temp = {};
-//	temp[v.zones[i].district] = v.zones[i].zone;
+// //	var temp = {};
+// //	temp[v.zones[i].district] = v.zones[i].zone;
 
 
-        map.data.forEach(function(feature) {
-    // If you want, check here for some constraints.
-                map.data.remove(feature);
-              //  console.log(i++);  // to see count of dist
-        });
+//         map.data.forEach(function(feature) {
+//     // If you want, check here for some constraints.
+//                 map.data.remove(feature);
+//               //  console.log(i++);  // to see count of dist
+//         });
 
         
-	if(!dd[v.zones[i].state])
-		dd[v.zones[i].state] = {};
+// 	if(!dd[v.zones[i].state])
+// 		dd[v.zones[i].state] = {};
 
-	dd[v.zones[i].state][v.zones[i].district] = v.zones[i].districtcode;
-}
+// 	dd[v.zones[i].state][v.zones[i].district] = v.zones[i].districtcode;
+// }
 
-console.log(dd);
+// console.log(dd);
 
-         map.data.loadGeoJson("./static/assets/states/"+ document.getElementById('selectcity').value +".geojson");
-         map.data.addListener('mouseover', function(event) {
-        document.getElementById('info-box').textContent =
-        event.feature.getProperty('NAME_1')+' , '+ event.feature.getProperty('NAME_2') ;
-        var na = "Zone : "+dd[event.feature.getProperty('NAME_1')][event.feature.getProperty('NAME_2')];
+//          map.data.loadGeoJson("./static/assets/states/"+ document.getElementById('selectcity').value +".geojson");
+//          map.data.addListener('mouseover', function(event) {
+//         document.getElementById('info-box').textContent =
+//         event.feature.getProperty('NAME_1')+' , '+ event.feature.getProperty('NAME_2') ;
+//         var na = "Zone : "+dd[event.feature.getProperty('NAME_1')][event.feature.getProperty('NAME_2')];
 
-        document.getElementById('info').textContent = na;
-});
+//         document.getElementById('info').textContent = na;
+// });
 
-map.data.addListener('mouseout', function(event) {
-  map.data.revertStyle();
-});
+// map.data.addListener('mouseout', function(event) {
+//   map.data.revertStyle();
+// });
 
 
-         var DistrictColorCode = {};
-var i=0;
+//          var DistrictColorCode = {};
+// var i=0;
 
-for (;i < v.zones.length - 1; i++) {
-	if(!DistrictColorCode[v.zones[i].state])
-		DistrictColorCode[v.zones[i].state] = {};
+// for (;i < v.zones.length - 1; i++) {
+// 	if(!DistrictColorCode[v.zones[i].state])
+// 		DistrictColorCode[v.zones[i].state] = {};
 
-	DistrictColorCode[v.zones[i].state][v.zones[i].district] = v.zones[i].zone;
-}
+// 	DistrictColorCode[v.zones[i].state][v.zones[i].district] = v.zones[i].zone;
+// }
 
-         map.data.setStyle(function(feature) {
-  var color = 'gray';
+//          map.data.setStyle(function(feature) {
+//   var color = 'gray';
 
-var colors = DistrictColorCode[feature.getProperty('NAME_1')][feature.getProperty('NAME_2')];
-//var colors = DistrictColorCode[feature.getProperty('Name')];
-  return /** @type {!google.maps.Data.StyleOptions} */({
-    fillColor: colors,
-    strokeColor: color,
-    strokeWeight: 2
-  });
-});
+// var colors = DistrictColorCode[feature.getProperty('NAME_1')][feature.getProperty('NAME_2')];
+// //var colors = DistrictColorCode[feature.getProperty('Name')];
+//   return /** @type {!google.maps.Data.StyleOptions} */({
+//     fillColor: colors,
+//     strokeColor: color,
+//     strokeWeight: 2
+//   });
+// });
 
       
-});
+// });
 
 //mobile
 
