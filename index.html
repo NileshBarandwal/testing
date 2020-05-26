@@ -19,7 +19,7 @@
       }
 
       /**/
-      #floating-panel {
+      /* #floating-panel {
         position: absolute;
         top: 30px;
         left: 25%;
@@ -32,7 +32,7 @@
         font-family: 'Roboto','sans-serif';
         line-height: 30px;
         padding-left: 10px;
-      }
+      } */
       #floating-info {
         position: absolute;
         bottom: 2%;
@@ -110,23 +110,133 @@
         z-index: 5;
 		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   } */
-		  #floating-panel {
+		  /* #floating-panel {
     position: absolute;
     top: 2%;
     left: 8%;
     background-color: #f9f9f9;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
+} */
 	  }
 
       /**/
 	</style>
 	
-	  <!-- Bootstrap CSS -->
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/7.0.1-1/tachyons.css">
+<style>
+
+body {
+  background: #fafafc;
+}
+
+.nav-wrap nav {
+  display: inline-block;
+  position: relative;
+  z-index: 1000;
+}
+.nav-wrap ul {
+  list-style-type: none;
+  display: inline;
+  padding-left: 0px;
+}
+.nav-wrap li {
+  display: inline;
+  color: #787878;
+  transition: 0.2s all;
+}
+.nav-wrap li:hover {
+  color: #2b2b2b;
+}
+.nav-wrap a {
+  text-decoration: none;
+  color: inherit;
+  font-family: "Poppins", sans-serif;
+}
+.nav-wrap span {
+  cursor: pointer;
+  position: absolute;
+  color: #2b2b2b;
+  top: 50%;
+  right: 12px;
+  z-index: 999;
+  transform: translateY(-50%);
+  transition: all 0.3s;
+  border-radius: 1000px;
+}
+.nav-wrap span:hover {
+  color: red;
+}
+.active-address .nav-wrap span {
+  right: calc(100% + 10px);
+  transition: all 300ms ease;
+  color: red;
+}
+.nav-wrap form {
+  display: inline-block;
+}
+.nav-wrap form input {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  opacity: 1;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 999px;
+  transition: all 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  padding: 20px;
+  opacity: 0;
+  font-size: 1.25rem;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 4px 12px -2px rgba(107, 117, 161, 0.16);
+  cursor: pointer;
+  transform: translateY(-100px);
+}
+.nav-wrap form input:focus {
+  color: #2b2b2b;
+  width: 100%;
+  outline: none;
+  padding: 10px 20px;
+  border: none;
+  font-weight: 100;
+}
+.nav-wrap form input:focus:placeholder {
+  padding: 2px 20px;
+}
+.active-address .nav-wrap form input {
+  width: 100%;
+  height: auto;
+  background: white;
+  outline: none;
+  transition: all 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  opacity: 1;
+  box-shadow: 0 4px 12px -2px rgba(107, 117, 161, 0.16);
+  transform: translateY(-20px);
+}
+.active-address .nav-wrap form input::-webkit-input-placeholder {
+  color: lightgray;
+}
+
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
   </head>
   <body>
+	<header class="flex">
+        <div class=" flex justify-center items-center nav-wrap w-100 absolute pv4">
+          <nav class="w-70">
+            <form>
+              <label for="address">
+                <span class="fa fa-search"></span>
+              </label>
+              <input type="text" placeholder="search" id="address"/>   
+            </form>
+          </nav>
+        </div>
+      </header>
         <select id="selectcity">
                 <option value="" selected disabled>---- Select States ----</option>
                 <option value="Andaman and Nicobar">Andaman and Nicobar</option>
@@ -172,10 +282,10 @@
                          <label for="" id="info">Patient</label>
                         </div> -->
           <!-- ----- -->
-        <div id="floating-panel">
+        <!-- <div id="floating-panel">
                 <input id="address" type="textbox" placeholder="Type Name of Location">
                 <input id="submit" type="button" value="Search">
-              </div>
+              </div> -->
          <!-- ----- -->
     <div id="map"></div>
     
@@ -7417,7 +7527,28 @@ var nam = [
         "description": '10',lng: 80.937326,lat: 15.726095}, 
 
       ]
-    </script>
+	</script>
+	
+	<script>
+		$(document).ready(function () {
+		  $(".fa-search").on("click", function (event) {
+			event.preventDefault();
+			$("#address").focus();
+			$("body").toggleClass("active-address");
+		  });
+		  $("#address").on("blur", function (event) {
+			$("body").removeClass("active-address");
+		  });
+		});
+		$("header").keypress(function(e) {
+		  //Enter key
+		  if (e.which == 13) {
+			return false;
+		  }
+		});
+		
+			  </script>
+
     <!-- Replace following script src -->
     <script src="/maps/documentation/javascript/examples/markerclusterer/markerclustererplus@4.0.1.min.js">
     </script>
@@ -7435,5 +7566,5 @@ var nam = [
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
-  
+
 </html>
