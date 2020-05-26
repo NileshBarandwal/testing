@@ -683,8 +683,10 @@ Element.prototype.appendChild = function (element) {
 
 var geocoder = new google.maps.Geocoder();
 
-document.getElementById('address').addEventListener('click', function() {
+document.getElementById('address').addEventListener('keypress', function(e) {
+	if (e.key === 'Enter') {
   geocodeAddress(geocoder, map);
+	}
 });
 
 //add auto from covid19 json api
