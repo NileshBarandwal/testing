@@ -78,26 +78,30 @@
         padding-left: 10px;
       }
 
-	  #search{
+/* 	  #search{
 			display: none;
-	  }
+	  } */
 
 	  @media screen and (max-width:800px) {
-		#floating-panel {
+/* 		#floating-panel {
         position: absolute;
-        top: 87px;
-        left: 22%;
-		background-color: #f9f9f9;
-		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  }
+        top: 2%;
+        left: 7%;
+	background-color: #f9f9f9;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  } */
+		  #floating-info {
+        position: absolute;
+        bottom: 10%;
+		  }
  #selectcity {
         position: absolute;
-        top: 3%;
+        top: 92%;
         right: 19%;
 		background-color: #f9f9f9;
 		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   }
-  #search{
+/*   #search{
 	  display: block;
 	position: absolute;
         top: 3%;
@@ -105,11 +109,11 @@
 		padding: 5px 5px 5px 5px;
         z-index: 5;
 		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  }
+  } */
 		  #floating-panel {
     position: absolute;
-    top: 70px;
-    left: 11%;
+    top: 2%;
+    left: 8%;
     background-color: #f9f9f9;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
@@ -160,7 +164,7 @@
                 <option value="Uttar Pradesh">Uttar Pradesh</option>
                 <option value="West Bengal">West Bengal</option>
 			</select>
-	  <input type="button" id="search" value="search">
+<!-- 	  <input type="button" id="search" value="search"> -->
             <div id="floating-info">
                 <label for="" id="info-box" placeholder="Select State and Scroll over to see name ">Select State and Scroll over to see name</label>
                 </div>
@@ -198,77 +202,77 @@
 
 //mobile
 
-document.getElementById('search').addEventListener('click', function() {
-        // if(g.length) map.data.remove(g[0]);
-        // map.data.revertStyle();
-// var i =0;
+// document.getElementById('search').addEventListener('change', function() {
+//         // if(g.length) map.data.remove(g[0]);
+//         // map.data.revertStyle();
+// // var i =0;
 
-var dd = {};
-var i=0;
+// var dd = {};
+// var i=0;
 
-for (;i < v.zones.length - 1; i++) {
+// for (;i < v.zones.length - 1; i++) {
 
-//	var temp = {};
-//	temp[v.zones[i].district] = v.zones[i].zone;
+// //	var temp = {};
+// //	temp[v.zones[i].district] = v.zones[i].zone;
 
 
-        map.data.forEach(function(feature) {
-    // If you want, check here for some constraints.
-                map.data.remove(feature);
-              //  console.log(i++);  // to see count of dist
-        });
+//         map.data.forEach(function(feature) {
+//     // If you want, check here for some constraints.
+//                 map.data.remove(feature);
+//               //  console.log(i++);  // to see count of dist
+//         });
 
         
-	if(!dd[v.zones[i].state])
-		dd[v.zones[i].state] = {};
+// 	if(!dd[v.zones[i].state])
+// 		dd[v.zones[i].state] = {};
 
-	dd[v.zones[i].state][v.zones[i].district] = v.zones[i].districtcode;
-}
+// 	dd[v.zones[i].state][v.zones[i].district] = v.zones[i].districtcode;
+// }
 
-console.log(dd);
+// console.log(dd);
 
-         map.data.loadGeoJson("./static/assets/states/"+ document.getElementById('selectcity').value +".geojson");
-         map.data.addListener('mouseover', function(event) {
-        document.getElementById('info-box').textContent =
-        event.feature.getProperty('NAME_1')+' , '+ event.feature.getProperty('NAME_2') ;
-        var na = "Zone : "+dd[event.feature.getProperty('NAME_1')][event.feature.getProperty('NAME_2')];
+//          map.data.loadGeoJson("./static/assets/states/"+ document.getElementById('selectcity').value +".geojson");
+//          map.data.addListener('mouseover', function(event) {
+//         document.getElementById('info-box').textContent =
+//         event.feature.getProperty('NAME_1')+' , '+ event.feature.getProperty('NAME_2') ;
+//         var na = "Zone : "+dd[event.feature.getProperty('NAME_1')][event.feature.getProperty('NAME_2')];
 
-        document.getElementById('info').textContent = na;
-});
+//         document.getElementById('info').textContent = na;
+// });
 
-map.data.addListener('mouseout', function(event) {
-  map.data.revertStyle();
-});
+// map.data.addListener('mouseout', function(event) {
+//   map.data.revertStyle();
+// });
 
 
-         var DistrictColorCode = {};
-var i=0;
+//          var DistrictColorCode = {};
+// var i=0;
 
-for (;i < v.zones.length - 1; i++) {
-	if(!DistrictColorCode[v.zones[i].state])
-		DistrictColorCode[v.zones[i].state] = {};
+// for (;i < v.zones.length - 1; i++) {
+// 	if(!DistrictColorCode[v.zones[i].state])
+// 		DistrictColorCode[v.zones[i].state] = {};
 
-	DistrictColorCode[v.zones[i].state][v.zones[i].district] = v.zones[i].zone;
-}
+// 	DistrictColorCode[v.zones[i].state][v.zones[i].district] = v.zones[i].zone;
+// }
 
-         map.data.setStyle(function(feature) {
-  var color = 'gray';
+//          map.data.setStyle(function(feature) {
+//   var color = 'gray';
 
-var colors = DistrictColorCode[feature.getProperty('NAME_1')][feature.getProperty('NAME_2')];
-//var colors = DistrictColorCode[feature.getProperty('Name')];
-  return /** @type {!google.maps.Data.StyleOptions} */({
-    fillColor: colors,
-    strokeColor: color,
-    strokeWeight: 2
-  });
-});
+// var colors = DistrictColorCode[feature.getProperty('NAME_1')][feature.getProperty('NAME_2')];
+// //var colors = DistrictColorCode[feature.getProperty('Name')];
+//   return /** @type {!google.maps.Data.StyleOptions} */({
+//     fillColor: colors,
+//     strokeColor: color,
+//     strokeWeight: 2
+//   });
+// });
 
       
-});
+// });
 
 //mobile
 
-document.getElementById('selectcity').addEventListener('click', function() {
+document.getElementById('selectcity').addEventListener('change', function() {
         // if(g.length) map.data.remove(g[0]);
         // map.data.revertStyle();
 // var i =0;
@@ -622,8 +626,7 @@ geocoder.geocode({'address': address}, function(results, status) {
 // ______________
 
       }
-
-
+	    
 var v = {
         
 	"zones": [
